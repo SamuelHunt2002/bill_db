@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase';
-import { useHistory } from 'react-router-dom';
+import { useRouter } from 'next/router';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const history = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
