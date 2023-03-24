@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import Link from 'next/link';
 
-const BillList = () => {
+const BillList = ({ searchTerm }) => {
   const [bills, setBills] = useState([]);
 
   useEffect(() => {
@@ -15,29 +16,24 @@ const BillList = () => {
     return () => unsubscribe();
   }, []);
 
+  const filteredBills = bills.filter((bill) =>
+    bill.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <ul>
-        {bills.map((bill) => (
-          <li key={bill.id}>
-            <h3>Bill Number: {bill.billNumber}</h3>
-            <p>Title: {bill.title}</p>
-            <p>Long Title: {bill.longTitle}</p>
-            <p>Content: {bill.content}</p>
-            <p>
-              Tags:{' '}
-              {bill.tags.map((tag, index) => (
-                <span key={index}>
-                  {tag}
-                  {index < bill.tags.length - 1 ? ', ' : ''}
-                </span>
-              ))}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+        {filteredBills.map((bill) => (
+         
+<li key={bill.id}>
+        <Link href={`/bill/${bill.id}`}>
+         {bill.title}
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div>
+);
 };
 
 export default BillList;
